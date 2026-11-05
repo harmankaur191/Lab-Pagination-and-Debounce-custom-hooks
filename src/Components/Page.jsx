@@ -1,6 +1,7 @@
 import PageList from "./PageList"
 import usePagination from "../CustomHooks/usePagination"
 import { useState } from "react";
+import PaginationButton from "./PaginationButton";
 export default function Page() {
 
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -32,21 +33,25 @@ export default function Page() {
     }
     console.log("items per page:", itemsPerPage);
     return (
-        <div className="text-white">
-            <h1>Pagination Demo</h1>
-            <label>Items per page: </label>
+        <div className=" flex flex-col text-white border-white border-1 p-3 max-w-fit gap-10 ">
+            <h1 className="self-center">Pagination Demo</h1>
+        <div className="flex justify-between">
+           
+            <div>  
+             <label>Items per page: </label>
             <input type='number' id='itemsperpage' min={5} max={100} step={5} value={itemsPerPage} onChange={handleChange} />
+            </div>
+            
             <label>Total Items:{items.length}</label>
-
-            <PageList items={currentItems} />
-        <div className="flex gap-4">
-            <button onClick={prevPage} disabled={!canPrevPage}>Previous</button>
-       
-            <button onClick={nextPage} disabled={!canNextPage}>Next</button>
+           
         </div>
-        <div>
-            <button></button>
+             <PageList items={currentItems} />
+        <div className="flex gap-4 justify-between">
+            <button onClick={prevPage} disabled={!canPrevPage} >Previous</button>
+            <p>Page {currentPage} of {totalPages}</p>
+            <button onClick={nextPage} disabled={!canNextPage} >Next</button>
         </div>
+        <PaginationButton totalPages={totalPages} setPage={setPage} currentPage={currentPage} />
         </div>
     )
 }

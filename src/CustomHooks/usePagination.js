@@ -11,6 +11,7 @@ export default function usePagination({ totalItems, itemsPerPage = 10, initialPa
     }
     const setPage =(pageNumber)=>{
         const page = Math.max(1, Math.min(pageNumber, totalPages));
+        setCurrentPage(page);
     }
 
     const nextPage=()=>{
