@@ -7,16 +7,19 @@ export default function DebounceInput() {
     const [searchItem, setSearchItem] = useState("");
     const [delay, setDelay] = useState(500);
     const [searchResults, setSearchResults] = useState([]);
+    const [status,setStatus]=useState('Simulated Search Results')
     const handleChange = (e) => {
         const debounceTime = Number(e.target.value);
         setDelay(debounceTime);
 
     }
-    const debouncedSearchItem = useDebounce(searchItem,delay);
+    const debouncedSearchItem = useDebounce(searchItem,delay,status);
     useEffect(()=>{
+        
         if(!debouncedSearchItem.trim()){
             console.log(debouncedSearchItem)
-             setSearchResults([]);
+             setSearchResults(['No results found']);
+             setStatus('Simulated Search Results:')
              return;
         }
             const filterItems = countries.filter((country)=>
@@ -25,6 +28,7 @@ export default function DebounceInput() {
              
             );
             console.log(filterItems)
+             setStatus('Simulated Search Results:')
            setSearchResults(filterItems);
             
         
@@ -37,6 +41,7 @@ console.log(searchResults)
         e.preventDefault();
         const search=e.target.value;
         setSearchItem(search);
+        setStatus('Searching..')
         console.log(searchItem)
     }
 console.log(searchItem)
@@ -54,11 +59,14 @@ console.log(searchItem)
             <label>Current Input:{searchItem}</label>
             <label>Debounced Value(after {delay}ms):{debouncedSearchItem}</label>
             
-            <label>Simulated Search Results:</label>   
-            <ul>
-                {searchResults.map((searchResult,index)=>{
+            <label>{status}</label>   
+            <ul className="list-disc">{
+                searchItem === ''? ('Type to search'):
+                searchResults.length===0? ('No matching results found'):(
+                
+                searchResults.map((searchResult,index)=>{
                    return  <li key={index}>{searchResult}</li>;
-                })}
+                }))}
             </ul>
 
         </div>
